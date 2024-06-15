@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>es.aldane.hermes.cloud</groupId>
+        <artifactId>api-pom</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <groupId>es.aldane.hermes.cloud</groupId>
+    <artifactId>contabilidad-api-client-angular</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <openapi-generator-maven-plugin.version>6.2.1</openapi-generator-maven-plugin.version>
+        <maven-assembly-plugin.version>2.3</maven-assembly-plugin.version>
+        <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
+        <maven-remote-resources-plugin.version>3.0.0</maven-remote-resources-plugin.version>
+        <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-api-code-client-angular</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/../openapi.yaml</inputSpec>
+                            <generatorName>typescript-angular</generatorName>
+                            <configOptions>
+                                <npmName>@daxlto/${project.artifactId}</npmName>
+                                <providedInRoot>true</providedInRoot>
+                                <apiModulePrefix>Contabilidad</apiModulePrefix>
+                                <ngVersion>11.2.14</ngVersion>
+                                <snapshot>true</snapshot>
+                                <npmVersion>${project.version}</npmVersion>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- NPM build and publish -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.12.1</version>
+                <configuration>
+                    <workingDirectory>target\generated-sources\openapi</workingDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <phase>install</phase>
+                        <configuration>
+                            <nodeVersion>v14.16.0</nodeVersion>
+                            <npmVersion>6.14.11</npmVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>install</phase>
+                        <configuration>
+                            <npmInheritsProxyConfigFromMaven>true</npmInheritsProxyConfigFromMaven>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm install node version</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>install</phase>
+                        <configuration>
+                            <npmInheritsProxyConfigFromMaven>true</npmInheritsProxyConfigFromMaven>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <arguments>install @types/node@18.11.19 --save-dev</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>install</phase>
+                        <configuration>
+                            <npmInheritsProxyConfigFromMaven>true</npmInheritsProxyConfigFromMaven>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/DAXlTO/hermes.microservices.libraries.api-pom</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/DAXlTO/hermes.microservices.libraries.accounting-api</url>
+        </repository>
+    </distributionManagement>
+</project>

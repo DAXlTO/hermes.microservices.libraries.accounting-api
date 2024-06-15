@@ -1,0 +1,49 @@
+name: Generate Node.js library
+
+on:
+  push:
+    paths:
+      - 'api-client-angular/**'
+    branches:
+      - master
+
+jobs:
+  generate-library:
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - uses: actions/checkout@v4
+      # Setup .npmrc file to publish to GitHub Packages
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '14.16.0'
+          registry-url: 'https://npm.pkg.github.com'
+          # Defaults to the user or organization that owns the workflow file
+          scope: '@daxlto'
+      - run: |
+          mvn clean install
+          cd /home/runner/work/hermes.microservices.libraries.accounting-api/hermes.microservices.libraries.accounting-api/api-client-angular/target/generated-sources/openapi
+          npm install --legacy-peer-deps
+          npm ci
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

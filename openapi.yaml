@@ -1,0 +1,1146 @@
+openapi: 3.0.3
+info:
+  title: Java Accounting
+  description: The Accounting service is responsible for sending and receiving information about user movements.
+  version: 0.1.0
+servers:
+  - url: 'http://localhost:8080/accounting-java'
+tags:
+  - name: Wallet
+    description: User wallets
+  - name: Category
+    description: Category of the movement performed by the user
+  - name: Status
+    description: Current status of the related entity
+  - name: Brand
+    description: Brand of the movement performed by the user
+  - name: Movement
+    description: Movements made by the user
+  - name: Role
+    description: User role
+  - name: Store
+    description: Store of the movement performed by the user
+  - name: Movement Type
+    description: Movement Type performed by the user
+  - name: User
+    description: User data registered in the system
+paths:
+  /wallets:
+    get:
+      tags:
+        - Wallet
+      summary: Gets all wallets by user ID
+      operationId: getWallets
+      parameters:
+        - in: query
+          name: userId
+          required: false
+          description: Filter wallets by user ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: List of wallets found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Wallet'
+        '500':
+          description: Server error
+
+    post:
+      tags:
+        - Wallet
+      summary: Crea una nueva wallet
+      operationId: createWallet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+      responses:
+        '200':
+          description: Wallet creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        '400':
+          description: Some of the parameters provided are not valid.
+        '500':
+          description: Server error
+  '/wallet/{walletId}':
+      get:
+        tags:
+          - Wallet
+        summary: Obtains a wallet by its ID
+        operationId: getWalletById
+        parameters:
+          - in: path
+            name: walletId
+            required: true
+            description: Wallet ID to be obtained
+            schema:
+              type: integer
+              format: int32
+        responses:
+          '200':
+            description: Wallet found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Wallet'
+          '404':
+            description: Wallet not found
+          '500':
+            description: Server error
+      put:
+        tags:
+          - Wallet
+        summary: Upgrade an existing wallet
+        operationId: updateWallet
+        parameters:
+          - in: path
+            name: walletId
+            required: true
+            description: ID of the wallet to be updated
+            schema:
+              type: integer
+              format: int32
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        responses:
+          '200':
+            description: Wallet successfully updated
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Wallet'
+          '400':
+            description: Some of the parameters provided are not valid.
+          '404':
+            description: Wallet not found
+          '500':
+            description: Server error
+  /deleteWallet/{walletId}:
+    delete:
+      tags:
+        - Wallet
+      summary: Delete an existing wallet
+      operationId: deleteWallet
+      parameters:
+        - in: path
+          name: walletId
+          required: true
+          description: ID of the wallet to be deleted
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Wallet successfully deleted
+        '404':
+          description: Wallet not found
+        '500':
+          description: Server error
+  /getCategories:
+    get:
+      tags:
+        - Category
+      summary: Get all categories
+      responses:
+        '200':
+          description: List of all categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '500':
+          description: Server error
+  /getCategory/{categoryId}:
+    get:
+      tags:
+        - Category
+      summary: Gets the category by ID
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          description: Category ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Category
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Category'
+        '404':
+          description: Category not found
+        '500':
+          description: Server error
+  /createCategory:
+    post:
+      tags:
+        - Category
+      summary: Create a new category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Category successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /updateCategory:
+    put:
+      tags:
+        - Category
+      summary: Update an existing category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Category successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /deleteCategory/{categoryId}:
+    delete:
+      tags:
+        - Category
+      summary: Delete an existing category
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          description: ID of the category to be deleted
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Category successfully deleted
+        '404':
+          description: Category not found
+        '500':
+          description: Server error
+  /getStores:
+    get:
+      tags:
+        - Store
+      summary: Get all the stores
+      responses:
+        '200':
+          description: List of all stores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Store'
+        '500':
+          description: Server error
+  /getStore/{storeId}:
+    get:
+      tags:
+        - Store
+      summary: Gets the store by ID
+      parameters:
+        - in: path
+          name: storeId
+          required: true
+          description: Store ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Store
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Store'
+        '404':
+          description: The store was not found
+        '500':
+          description: Server error
+  /createStore:
+    post:
+      tags:
+        - Store
+      summary: Create a new store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Store'
+      responses:
+        '200':
+          description: Store successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+        '400':
+            description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /updateStore:
+    put:
+      tags:
+        - Store
+      summary: Upgrade an existing store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Store'
+      responses:
+        '200':
+          description: Store successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /deleteStore/{storeId}:
+    delete:
+      tags:
+        - Store
+      summary: Delete an existing store
+      parameters:
+        - in: path
+          name: storeId
+          required: true
+          description: ID of the store to be deleted
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Store successfully removed
+        '404':
+          description: The store was not found
+        '500':
+          description: Server error
+  /getBrands:
+    get:
+      tags:
+        - Brand
+      summary: Obtains all the brands
+      responses:
+        '200':
+          description: List of all brands
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Brand'
+        '500':
+          description: Server error
+  /getBrand/{brandId}:
+    get:
+      tags:
+        - Brand
+      summary: Gets the brand by ID
+      parameters:
+        - in: path
+          name: brandId
+          required: true
+          description: Brand ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Brand
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Brand'
+        '404':
+          description: The brand was not found
+        '500':
+          description: Server error
+  /createBrand:
+    post:
+      tags:
+        - Brand
+      summary: Create a new brand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Brand'
+      responses:
+        '200':
+          description: Brand successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Brand'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /updateBrand:
+    put:
+      tags:
+        - Brand
+      summary: Upgrade an existing brand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Brand'
+      responses:
+        '200':
+          description: Brand successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Brand'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /deleteBrand/{brandId}:
+    delete:
+      tags:
+        - Brand
+      summary: Remove an existing brand
+      parameters:
+        - in: path
+          name: brandId
+          required: true
+          description: ID of the brand to be deleted
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Brand eliminada exitosamente
+        '404':
+          description: The brand was not found
+        '500':
+          description: Server error
+  /getStatuses:
+    get:
+      tags:
+        - Status
+      summary: Get all the statuses
+      responses:
+        '200':
+          description: List of all statuses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status'
+        '500':
+          description: Server error
+  /getStatus/{statusId}:
+    get:
+      tags:
+        - Status
+      summary: Get status by ID
+      parameters:
+        - in: path
+          name: statusId
+          required: true
+          description: Status ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Status
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Status'
+        '404':
+          description: Status not found
+        '500':
+          description: Server error
+  /createStatus:
+    post:
+      tags:
+        - Status
+      summary: Create a new status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Status'
+      responses:
+        '200':
+          description: Status successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /updateStatus:
+    put:
+      tags:
+        - Status
+      summary: Update an existing status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Status'
+      responses:
+        '200':
+          description: Status successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /deleteStatus/{statusId}:
+    delete:
+      tags:
+        - Status
+      summary: Deletes an existing status
+      parameters:
+        - in: path
+          name: statusId
+          required: true
+          description: ID of the state to be deleted
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Status successfully removed
+        '404':
+          description: The status was not found
+        '500':
+          description: Server error
+  /getRoles:
+    get:
+      tags:
+        - Role
+      summary: Get all roles
+      responses:
+        '200':
+          description: List of all roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        '500':
+          description: Server error
+  /getRole/{roleId}:
+    get:
+      tags:
+        - Role
+      summary: Get the role by ID
+      parameters:
+        - in: path
+          name: roleId
+          required: true
+          description: Role ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Role
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Role'
+        '404':
+          description: The role was not found
+        '500':
+          description: Server error
+  /createRole:
+    post:
+      tags:
+        - Role
+      summary: Create a new role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '200':
+          description: Successfully created role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /updateRole:
+    put:
+      tags:
+        - Role
+      summary: Upgrade an existing role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '200':
+          description: Role successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /deleteRole/{roleId}:
+    delete:
+      tags:
+        - Role
+      summary: Remove an existing role
+      parameters:
+        - in: path
+          name: roleId
+          required: true
+          description: ID of the role to be deleted
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Role successfully eliminated
+        '404':
+          description: The role was not found
+        '500':
+          description: Server error
+  /getMovements:
+    get:
+      tags:
+        - Movement
+      summary: Get all the movements
+      responses:
+        '200':
+          description: List of all movements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movement'
+        '500':
+          description: Server error
+  /getMovement/{movementId}:
+    get:
+      tags:
+        - Movement
+      summary: Get movement by ID
+      parameters:
+        - in: path
+          name: movementId
+          required: true
+          description: Movement ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Movement
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Movement'
+        '404':
+          description: The movement was not found
+        '500':
+          description: Server error
+  /createMovement:
+    post:
+      tags:
+        - Movement
+      summary: Create a new movement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movement'
+      responses:
+        '200':
+          description: Movement successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movement'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /updateMovement:
+    put:
+      tags:
+        - Movement
+      summary: Update an existing movement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movement'
+      responses:
+        '200':
+          description: Movement successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movement'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /deleteMovement/{movementId}:
+    delete:
+      tags:
+        - Movement
+      summary: Delete an existing movement
+      parameters:
+        - in: path
+          name: movementId
+          required: true
+          description: ID of the movement to be deleted
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Movement successfully removed
+        '404':
+          description: The movement was not found
+        '500':
+          description: Server error
+  /getMovementTypes:
+    get:
+      tags:
+        - Movement Type
+      summary: Get all movement types
+      responses:
+        '200':
+          description: List of all movement types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovementType'
+        '500':
+          description: Server error
+  /getMovementType/{movementTypeId}:
+    get:
+      tags:
+        - Movement Type
+      summary: Get the movement type by ID
+      parameters:
+        - in: path
+          name: movementTypeId
+          required: true
+          description: Movement type ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Movement Type
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MovementType'
+        '404':
+          description: The movement type was not found
+        '500':
+          description: Server error
+  /createMovementType:
+    post:
+      tags:
+        - Movement Type
+      summary: Creates a new movement type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovementType'
+      responses:
+        '200':
+          description: Movement type successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovementType'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /updateMovementType:
+    put:
+      tags:
+        - Movement Type
+      summary: Update an existing movement type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovementType'
+      responses:
+        '200':
+          description: Movement type successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovementType'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /deleteMovementType/{movementTypeId}:
+    delete:
+      tags:
+        - Movement Type
+      summary: Delete an existing movement type
+      parameters:
+        - in: path
+          name: movementTypeId
+          required: true
+          description: ID of the movement type to be deleted
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Movement type successfully removed
+        '404':
+          description: The movement type was not found
+        '500':
+          description: Server error
+  /getUsers:
+    get:
+      tags:
+        - User
+      summary: Get all users
+      responses:
+        '200':
+          description: List of all users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '500':
+          description: Server error
+  /getUser/{userId}:
+    get:
+      tags:
+        - User
+      summary: Get the user by user ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: User ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+        '500':
+          description: Server error
+  /createUser:
+    post:
+      tags:
+        - User
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /updateUser:
+    put:
+      tags:
+        - User
+      summary: Update an existing user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Some of the parameters are not valid
+        '500':
+          description: Server error
+  /deleteUser/{userId}:
+    delete:
+      tags:
+        - User
+      summary: Delete an existing user
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: ID of the user to be deleted
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: User successfully deleted
+        '404':
+          description: User not found
+        '500':
+          description: Server error
+components:
+  schemas:
+    Wallet:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        budget:
+          type: number
+          format: float
+        comment:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        name:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        last_modification:
+          type: string
+          format: date-time
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        comment:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        name:
+          type: string
+        last_modification:
+          type: string
+          format: date-time
+    Store:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        comment:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        name:
+          type: string
+        last_modification:
+          type: string
+          format: date-time
+    Brand:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        comment:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        name:
+          type: string
+        last_modification:
+          type: string
+          format: date-time
+    Status:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        comment:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+    Movement:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        amount:
+          type: number
+          format: float
+        wallet:
+          $ref: '#/components/schemas/Wallet'
+        comment:
+          type: string
+        category:
+          $ref: '#/components/schemas/Category'
+        status:
+          $ref: '#/components/schemas/Status'
+        date:
+          type: string
+          format: date
+        brand:
+          $ref: '#/components/schemas/Brand'
+        store:
+          $ref: '#/components/schemas/Store'
+        type_movement:
+          $ref: '#/components/schemas/MovementType'
+    MovementType:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        comment:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        name:
+          type: string
+        last_modification:
+          type: string
+          format: date
+          description: Date of last change in transaction type
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        comment:
+          type: string
+        record_date:
+          type: string
+          format: date-time
+        last_access:
+          type: string
+          format: date-time
+        role:
+          $ref: '#/components/schemas/Role'
