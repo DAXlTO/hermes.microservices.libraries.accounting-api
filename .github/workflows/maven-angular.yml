@@ -5,7 +5,7 @@ on:
     paths:
       - 'api-client-angular/**'
     branches:
-      - master
+      - main
 
 jobs:
   generate-library:

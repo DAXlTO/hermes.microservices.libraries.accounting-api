@@ -5,11 +5,11 @@ on:
   push:
     paths-ignore:
       - 'api-client-angular/**'
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
     paths-ignore:
       - 'api-client-angular/**'
-    branches: [ "master" ]
+    branches: [ "main" ]
 jobs:
   publish:
     runs-on: ubuntu-latest
