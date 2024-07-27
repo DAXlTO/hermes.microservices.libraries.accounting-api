@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Java Accounting
-  description: The Accounting service is responsible for sending and receiving information about user movements.
+  description: The Accounting service is responsible for sending and receiving information about user operations.
   version: 0.1.0
 servers:
   - url: 'http://localhost:8080/accounting-java'
@@ -9,19 +9,19 @@ tags:
   - name: Wallet
     description: User wallets
   - name: Category
-    description: Category of the movement performed by the user
+    description: Category of the operation performed by the user
   - name: Status
     description: Current status of the related entity
   - name: Brand
-    description: Brand of the movement performed by the user
-  - name: Movement
-    description: Movements made by the user
+    description: Brand of the operation performed by the user
+  - name: Operation
+    description: Operations made by the user
   - name: Role
     description: User role
   - name: Store
-    description: Store of the movement performed by the user
-  - name: Movement Type
-    description: Movement Type performed by the user
+    description: Store of the operation performed by the user
+  - name: Operation Type
+    description: Operation Type performed by the user
   - name: User
     description: User data registered in the system
 paths:
@@ -156,6 +156,7 @@ paths:
       tags:
         - Category
       summary: Get all categories
+      operationId: getCategories
       responses:
         '200':
           description: List of all categories
@@ -172,6 +173,7 @@ paths:
       tags:
         - Category
       summary: Gets the category by ID
+      operationId: getCategoryById
       parameters:
         - in: path
           name: categoryId
@@ -197,6 +199,7 @@ paths:
       tags:
         - Category
       summary: Create a new category
+      operationId: createCategory
       requestBody:
         required: true
         content:
@@ -219,6 +222,7 @@ paths:
       tags:
         - Category
       summary: Update an existing category
+      operationId: updateCategory
       requestBody:
         required: true
         content:
@@ -241,6 +245,7 @@ paths:
       tags:
         - Category
       summary: Delete an existing category
+      operationId: deleteCategory
       parameters:
         - in: path
           name: categoryId
@@ -261,6 +266,7 @@ paths:
       tags:
         - Store
       summary: Get all the stores
+      operationId: getStores
       responses:
         '200':
           description: List of all stores
@@ -277,6 +283,7 @@ paths:
       tags:
         - Store
       summary: Gets the store by ID
+      operationId: getStoreById
       parameters:
         - in: path
           name: storeId
@@ -302,6 +309,7 @@ paths:
       tags:
         - Store
       summary: Create a new store
+      operationId: createStore
       requestBody:
         required: true
         content:
@@ -324,6 +332,7 @@ paths:
       tags:
         - Store
       summary: Upgrade an existing store
+      operationId: updateStore
       requestBody:
         required: true
         content:
@@ -346,6 +355,7 @@ paths:
       tags:
         - Store
       summary: Delete an existing store
+      operationId: deleteStore
       parameters:
         - in: path
           name: storeId
@@ -366,6 +376,7 @@ paths:
       tags:
         - Brand
       summary: Obtains all the brands
+      operationId: getBrands
       responses:
         '200':
           description: List of all brands
@@ -382,6 +393,7 @@ paths:
       tags:
         - Brand
       summary: Gets the brand by ID
+      operationId: getBrandById
       parameters:
         - in: path
           name: brandId
@@ -407,6 +419,7 @@ paths:
       tags:
         - Brand
       summary: Create a new brand
+      operationId: createBrand
       requestBody:
         required: true
         content:
@@ -429,6 +442,7 @@ paths:
       tags:
         - Brand
       summary: Upgrade an existing brand
+      operationId: updateBrand
       requestBody:
         required: true
         content:
@@ -451,6 +465,7 @@ paths:
       tags:
         - Brand
       summary: Remove an existing brand
+      operationId: deleteBrand
       parameters:
         - in: path
           name: brandId
@@ -471,6 +486,7 @@ paths:
       tags:
         - Status
       summary: Get all the statuses
+      operationId: getStatuses
       responses:
         '200':
           description: List of all statuses
@@ -487,6 +503,7 @@ paths:
       tags:
         - Status
       summary: Get status by ID
+      operationId: getStatusById
       parameters:
         - in: path
           name: statusId
@@ -512,6 +529,7 @@ paths:
       tags:
         - Status
       summary: Create a new status
+      operationId: createStatus
       requestBody:
         required: true
         content:
@@ -534,6 +552,7 @@ paths:
       tags:
         - Status
       summary: Update an existing status
+      operationId: updateStatus
       requestBody:
         required: true
         content:
@@ -556,6 +575,7 @@ paths:
       tags:
         - Status
       summary: Deletes an existing status
+      operationId: deleteStatus
       parameters:
         - in: path
           name: statusId
@@ -576,6 +596,7 @@ paths:
       tags:
         - Role
       summary: Get all roles
+      operationId: getRoles
       responses:
         '200':
           description: List of all roles
@@ -592,6 +613,7 @@ paths:
       tags:
         - Role
       summary: Get the role by ID
+      operationId: getRoleById
       parameters:
         - in: path
           name: roleId
@@ -617,6 +639,7 @@ paths:
       tags:
         - Role
       summary: Create a new role
+      operationId: createRole
       requestBody:
         required: true
         content:
@@ -639,6 +662,7 @@ paths:
       tags:
         - Role
       summary: Upgrade an existing role
+      operationId: updateRole
       requestBody:
         required: true
         content:
@@ -661,6 +685,7 @@ paths:
       tags:
         - Role
       summary: Remove an existing role
+      operationId: deleteRole
       parameters:
         - in: path
           name: roleId
@@ -676,214 +701,224 @@ paths:
           description: The role was not found
         '500':
           description: Server error
-  /getMovements:
+  /getOperations:
     get:
       tags:
-        - Movement
-      summary: Get all the movements
+        - Operation
+      summary: Get all the operations
+      operationId: getOperations
       responses:
         '200':
-          description: List of all movements
+          description: List of all operations
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Movement'
+                  $ref: '#/components/schemas/Operation'
         '500':
           description: Server error
-  /getMovement/{movementId}:
+  /getOperation/{operationId}:
     get:
       tags:
-        - Movement
-      summary: Get movement by ID
+        - Operation
+      summary: Get operation by ID
+      operationId: getOperationById
       parameters:
         - in: path
-          name: movementId
+          name: operationId
           required: true
-          description: Movement ID
+          description: Operation ID
           schema:
             type: integer
             format: int32
       responses:
         '200':
-          description: Movement
+          description: Operation
           content:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Movement'
+                  $ref: '#/components/schemas/Operation'
         '404':
-          description: The movement was not found
+          description: The operation was not found
         '500':
           description: Server error
-  /createMovement:
+  /createOperation:
     post:
       tags:
-        - Movement
-      summary: Create a new movement
+        - Operation
+      summary: Create a new operation
+      operationId: createOperation
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Movement'
+              $ref: '#/components/schemas/Operation'
       responses:
         '200':
-          description: Movement successfully created
+          description: Operation successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Movement'
+                $ref: '#/components/schemas/Operation'
         '400':
           description: Some of the parameters are not valid
         '500':
           description: Server error
-  /updateMovement:
+  /updateOperation:
     put:
       tags:
-        - Movement
-      summary: Update an existing movement
+        - Operation
+      summary: Update an existing operation
+      operationId: updateOperation
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Movement'
+              $ref: '#/components/schemas/Operation'
       responses:
         '200':
-          description: Movement successfully updated
+          description: Operation successfully updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Movement'
+                $ref: '#/components/schemas/Operation'
         '400':
           description: Some of the parameters are not valid
         '500':
           description: Server error
-  /deleteMovement/{movementId}:
+  /deleteOperation/{operationId}:
     delete:
       tags:
-        - Movement
-      summary: Delete an existing movement
+        - Operation
+      summary: Delete an existing operation
+      operationId: deleteOperation
       parameters:
         - in: path
-          name: movementId
+          name: operationId
           required: true
-          description: ID of the movement to be deleted
+          description: ID of the operation to be deleted
           schema:
             type: integer
             format: int32
       responses:
         '200':
-          description: Movement successfully removed
+          description: Operation successfully removed
         '404':
-          description: The movement was not found
+          description: The operation was not found
         '500':
           description: Server error
-  /getMovementTypes:
+  /getOperationTypes:
     get:
       tags:
-        - Movement Type
-      summary: Get all movement types
+        - Operation Type
+      summary: Get all operation types
+      operationId: getOperationTypes
       responses:
         '200':
-          description: List of all movement types
+          description: List of all operation types
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/MovementType'
+                  $ref: '#/components/schemas/OperationType'
         '500':
           description: Server error
-  /getMovementType/{movementTypeId}:
+  /getOperationType/{operationTypeId}:
     get:
       tags:
-        - Movement Type
-      summary: Get the movement type by ID
+        - Operation Type
+      summary: Get the operation type by ID
+      operationId: getOperationTypeById
       parameters:
         - in: path
-          name: movementTypeId
+          name: operationTypeId
           required: true
-          description: Movement type ID
+          description: Operation type ID
           schema:
             type: integer
             format: int32
       responses:
         '200':
-          description: Movement Type
+          description: Operation Type
           content:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/MovementType'
+                  $ref: '#/components/schemas/OperationType'
         '404':
-          description: The movement type was not found
+          description: The operation type was not found
         '500':
           description: Server error
-  /createMovementType:
+  /createOperationType:
     post:
       tags:
-        - Movement Type
-      summary: Creates a new movement type
+        - Operation Type
+      summary: Creates a new operation type
+      operationId: createOperationType
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MovementType'
+              $ref: '#/components/schemas/OperationType'
       responses:
         '200':
-          description: Movement type successfully created
+          description: Operation type successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MovementType'
+                $ref: '#/components/schemas/OperationType'
         '400':
           description: Some of the parameters are not valid
         '500':
           description: Server error
-  /updateMovementType:
+  /updateOperationType:
     put:
       tags:
-        - Movement Type
-      summary: Update an existing movement type
+        - Operation Type
+      summary: Update an existing operation type
+      operationId: updateOperationType
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MovementType'
+              $ref: '#/components/schemas/OperationType'
       responses:
         '200':
-          description: Movement type successfully updated
+          description: Operation type successfully updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MovementType'
+                $ref: '#/components/schemas/OperationType'
         '400':
           description: Some of the parameters are not valid
         '500':
           description: Server error
-  /deleteMovementType/{movementTypeId}:
+  /deleteOperationType/{operationTypeId}:
     delete:
       tags:
-        - Movement Type
-      summary: Delete an existing movement type
+        - Operation Type
+      summary: Delete an existing operation type
+      operationId: deleteOperationType
       parameters:
         - in: path
-          name: movementTypeId
+          name: operationTypeId
           required: true
-          description: ID of the movement type to be deleted
+          description: ID of the operation type to be deleted
           schema:
             type: integer
             format: int32
       responses:
         '200':
-          description: Movement type successfully removed
+          description: Operation type successfully removed
         '404':
-          description: The movement type was not found
+          description: The operation type was not found
         '500':
           description: Server error
   /getUsers:
@@ -891,6 +926,7 @@ paths:
       tags:
         - User
       summary: Get all users
+      operationId: getUsers
       responses:
         '200':
           description: List of all users
@@ -907,6 +943,7 @@ paths:
       tags:
         - User
       summary: Get the user by user ID
+      operationId: getUserById
       parameters:
         - in: path
           name: userId
@@ -932,6 +969,7 @@ paths:
       tags:
         - User
       summary: Create a new user
+      operationId: createUser
       requestBody:
         required: true
         content:
@@ -954,6 +992,7 @@ paths:
       tags:
         - User
       summary: Update an existing user
+      operationId: updateUser
       requestBody:
         required: true
         content:
@@ -976,6 +1015,7 @@ paths:
       tags:
         - User
       summary: Delete an existing user
+      operationId: deleteUser
       parameters:
         - in: path
           name: userId
@@ -1078,7 +1118,7 @@ components:
           type: string
         status:
           $ref: '#/components/schemas/Status'
-    Movement:
+    Operation:
       type: object
       properties:
         id:
@@ -1102,9 +1142,9 @@ components:
           $ref: '#/components/schemas/Brand'
         store:
           $ref: '#/components/schemas/Store'
-        type_movement:
-          $ref: '#/components/schemas/MovementType'
-    MovementType:
+        type_operation:
+          $ref: '#/components/schemas/OperationType'
+    OperationType:
       type: object
       properties:
         id:
