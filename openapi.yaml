@@ -14,14 +14,14 @@ tags:
     description: Current status of the related entity
   - name: Brand
     description: Brand of the operation performed by the user
-  - name: Operation
+  - name: AccountEntry
     description: Operations made by the user
   - name: Role
     description: User role
   - name: Store
     description: Store of the operation performed by the user
-  - name: Operation Type
-    description: Operation Type performed by the user
+  - name: AccountEntry Type
+    description: AccountEntry Type performed by the user
   - name: User
     description: User data registered in the system
 paths:
@@ -704,7 +704,7 @@ paths:
   /getOperations:
     get:
       tags:
-        - Operation
+        - AccountEntry
       summary: Get all the operations
       operationId: getOperations
       responses:
@@ -715,31 +715,31 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Operation'
+                  $ref: '#/components/schemas/AccountEntry'
         '500':
           description: Server error
   /getOperation/{operationId}:
     get:
       tags:
-        - Operation
+        - AccountEntry
       summary: Get operation by ID
       operationId: getOperationById
       parameters:
         - in: path
           name: operationId
           required: true
-          description: Operation ID
+          description: AccountEntry ID
           schema:
             type: integer
             format: int32
       responses:
         '200':
-          description: Operation
+          description: AccountEntry
           content:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/Operation'
+                  $ref: '#/components/schemas/AccountEntry'
         '404':
           description: The operation was not found
         '500':
@@ -747,7 +747,7 @@ paths:
   /createOperation:
     post:
       tags:
-        - Operation
+        - AccountEntry
       summary: Create a new operation
       operationId: createOperation
       requestBody:
@@ -755,14 +755,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Operation'
+              $ref: '#/components/schemas/AccountEntry'
       responses:
         '200':
-          description: Operation successfully created
+          description: AccountEntry successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operation'
+                $ref: '#/components/schemas/AccountEntry'
         '400':
           description: Some of the parameters are not valid
         '500':
@@ -770,7 +770,7 @@ paths:
   /updateOperation:
     put:
       tags:
-        - Operation
+        - AccountEntry
       summary: Update an existing operation
       operationId: updateOperation
       requestBody:
@@ -778,14 +778,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Operation'
+              $ref: '#/components/schemas/AccountEntry'
       responses:
         '200':
-          description: Operation successfully updated
+          description: AccountEntry successfully updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operation'
+                $ref: '#/components/schemas/AccountEntry'
         '400':
           description: Some of the parameters are not valid
         '500':
@@ -793,7 +793,7 @@ paths:
   /deleteOperation/{operationId}:
     delete:
       tags:
-        - Operation
+        - AccountEntry
       summary: Delete an existing operation
       operationId: deleteOperation
       parameters:
@@ -806,7 +806,7 @@ paths:
             format: int32
       responses:
         '200':
-          description: Operation successfully removed
+          description: AccountEntry successfully removed
         '404':
           description: The operation was not found
         '500':
@@ -814,7 +814,7 @@ paths:
   /getOperationTypes:
     get:
       tags:
-        - Operation Type
+        - AccountEntry Type
       summary: Get all operation types
       operationId: getOperationTypes
       responses:
@@ -831,20 +831,20 @@ paths:
   /getOperationType/{operationTypeId}:
     get:
       tags:
-        - Operation Type
+        - AccountEntry Type
       summary: Get the operation type by ID
       operationId: getOperationTypeById
       parameters:
         - in: path
           name: operationTypeId
           required: true
-          description: Operation type ID
+          description: AccountEntry type ID
           schema:
             type: integer
             format: int32
       responses:
         '200':
-          description: Operation Type
+          description: AccountEntry Type
           content:
             application/json:
               schema:
@@ -857,7 +857,7 @@ paths:
   /createOperationType:
     post:
       tags:
-        - Operation Type
+        - AccountEntry Type
       summary: Creates a new operation type
       operationId: createOperationType
       requestBody:
@@ -868,7 +868,7 @@ paths:
               $ref: '#/components/schemas/OperationType'
       responses:
         '200':
-          description: Operation type successfully created
+          description: AccountEntry type successfully created
           content:
             application/json:
               schema:
@@ -880,7 +880,7 @@ paths:
   /updateOperationType:
     put:
       tags:
-        - Operation Type
+        - AccountEntry Type
       summary: Update an existing operation type
       operationId: updateOperationType
       requestBody:
@@ -891,7 +891,7 @@ paths:
               $ref: '#/components/schemas/OperationType'
       responses:
         '200':
-          description: Operation type successfully updated
+          description: AccountEntry type successfully updated
           content:
             application/json:
               schema:
@@ -903,7 +903,7 @@ paths:
   /deleteOperationType/{operationTypeId}:
     delete:
       tags:
-        - Operation Type
+        - AccountEntry Type
       summary: Delete an existing operation type
       operationId: deleteOperationType
       parameters:
@@ -916,7 +916,7 @@ paths:
             format: int32
       responses:
         '200':
-          description: Operation type successfully removed
+          description: AccountEntry type successfully removed
         '404':
           description: The operation type was not found
         '500':
@@ -1118,7 +1118,7 @@ components:
           type: string
         status:
           $ref: '#/components/schemas/Status'
-    Operation:
+    AccountEntry:
       type: object
       properties:
         id:
