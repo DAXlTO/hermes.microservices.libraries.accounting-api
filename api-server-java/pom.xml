@@ -11,8 +11,8 @@
     </parent>
 
     <groupId>es.aldane.hermes.cloud</groupId>
-    <artifactId>contabilidad-api-server-java</artifactId>
-    <version>1.0.1</version>
+    <artifactId>accounting-api-server-java</artifactId>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
 
     <repositories>

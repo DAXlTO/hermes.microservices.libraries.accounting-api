@@ -11,8 +11,8 @@
     </parent>
 
     <groupId>es.aldane.hermes.cloud</groupId>
-    <artifactId>contabilidad-api-client-angular</artifactId>
-    <version>1.0.1</version>
+    <artifactId>accounting-api-client-angular</artifactId>
+    <version>1.0.2</version>
 
     <properties>
         <openapi-generator-maven-plugin.version>6.2.1</openapi-generator-maven-plugin.version>
@@ -40,7 +40,7 @@
                             <configOptions>
                                 <npmName>@daxlto/${project.artifactId}</npmName>
                                 <providedInRoot>true</providedInRoot>
-                                <apiModulePrefix>Contabilidad</apiModulePrefix>
+                                <apiModulePrefix>Accounting</apiModulePrefix>
                                 <ngVersion>11.2.14</ngVersion>
                                 <snapshot>true</snapshot>
                                 <npmVersion>${project.version}</npmVersion>
