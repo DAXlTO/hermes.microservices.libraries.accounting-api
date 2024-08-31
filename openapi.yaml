@@ -20,7 +20,7 @@ tags:
     description: User role
   - name: Store
     description: Store of the operation performed by the user
-  - name: AccountEntry Type
+  - name: AccountEntryType
     description: AccountEntry Type performed by the user
   - name: User
     description: User data registered in the system
@@ -29,16 +29,8 @@ paths:
     get:
       tags:
         - Wallet
-      summary: Gets all wallets by user ID
+      summary: Gets all wallets
       operationId: getWallets
-      parameters:
-        - in: query
-          name: userId
-          required: false
-          description: Filter wallets by user ID
-          schema:
-            type: integer
-            format: int32
       responses:
         '200':
           description: List of wallets found
@@ -50,7 +42,6 @@ paths:
                   $ref: '#/components/schemas/Wallet'
         '500':
           description: Server error
-
     post:
       tags:
         - Wallet
@@ -73,63 +64,33 @@ paths:
           description: Some of the parameters provided are not valid.
         '500':
           description: Server error
-  '/wallet/{walletId}':
-      get:
-        tags:
-          - Wallet
-        summary: Obtains a wallet by its ID
-        operationId: getWalletById
-        parameters:
-          - in: path
-            name: walletId
-            required: true
-            description: Wallet ID to be obtained
-            schema:
-              type: integer
-              format: int32
-        responses:
-          '200':
-            description: Wallet found
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Wallet'
-          '404':
-            description: Wallet not found
-          '500':
-            description: Server error
-      put:
-        tags:
-          - Wallet
-        summary: Upgrade an existing wallet
-        operationId: updateWallet
-        parameters:
-          - in: path
-            name: walletId
-            required: true
-            description: ID of the wallet to be updated
-            schema:
-              type: integer
-              format: int32
-        requestBody:
+  '/getWalletsByUserId/{userId}':
+    get:
+      tags:
+        - Wallet
+      summary: Obtains a wallet by user ID
+      operationId: getWalletsByUserId
+      parameters:
+        - in: path
+          name: userId
           required: true
+          description: User ID to be obtained
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Wallet found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Wallet'
-        responses:
-          '200':
-            description: Wallet successfully updated
-            content:
-              application/json:
-                schema:
+                type: array
+                items:
                   $ref: '#/components/schemas/Wallet'
-          '400':
-            description: Some of the parameters provided are not valid.
-          '404':
-            description: Wallet not found
-          '500':
-            description: Server error
+        '404':
+          description: Wallet not found
+        '500':
+          description: Server error
   /deleteWallet/{walletId}:
     delete:
       tags:
@@ -143,10 +104,60 @@ paths:
           description: ID of the wallet to be deleted
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Wallet successfully deleted
+        '404':
+          description: Wallet not found
+        '500':
+          description: Server error
+  '/wallet/{walletId}':
+    get:
+      tags:
+        - Wallet
+      summary: Obtains a wallet by its ID
+      operationId: getWalletById
+      parameters:
+        - in: path
+          name: walletId
+          required: true
+          description: Wallet ID to be obtained
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Wallet found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        '404':
+          description: Wallet not found
+        '500':
+          description: Server error
+  /updateWallet:
+    put:
+      tags:
+        - Wallet
+      summary: Upgrade an existing wallet
+      operationId: updateWallet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+      responses:
+        '200':
+          description: Wallet successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        '400':
+          description: Some of the parameters provided are not valid.
         '404':
           description: Wallet not found
         '500':
@@ -181,15 +192,14 @@ paths:
           description: Category ID
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Category
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Category'
+                $ref: '#/components/schemas/Category'
         '404':
           description: Category not found
         '500':
@@ -253,7 +263,7 @@ paths:
           description: ID of the category to be deleted
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Category successfully deleted
@@ -291,15 +301,14 @@ paths:
           description: Store ID
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Store
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Store'
+                $ref: '#/components/schemas/Store'
         '404':
           description: The store was not found
         '500':
@@ -324,7 +333,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Store'
         '400':
-            description: Some of the parameters are not valid
+          description: Some of the parameters are not valid
         '500':
           description: Server error
   /updateStore:
@@ -363,7 +372,7 @@ paths:
           description: ID of the store to be deleted
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Store successfully removed
@@ -401,15 +410,14 @@ paths:
           description: Brand ID
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Brand
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Brand'
+                $ref: '#/components/schemas/Brand'
         '404':
           description: The brand was not found
         '500':
@@ -473,7 +481,7 @@ paths:
           description: ID of the brand to be deleted
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Brand eliminada exitosamente
@@ -481,12 +489,12 @@ paths:
           description: The brand was not found
         '500':
           description: Server error
-  /getStatuses:
+  /getStatus:
     get:
       tags:
         - Status
       summary: Get all the statuses
-      operationId: getStatuses
+      operationId: getStatus
       responses:
         '200':
           description: List of all statuses
@@ -511,15 +519,14 @@ paths:
           description: Status ID
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Status
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Status'
+                $ref: '#/components/schemas/Status'
         '404':
           description: Status not found
         '500':
@@ -583,7 +590,7 @@ paths:
           description: ID of the state to be deleted
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Status successfully removed
@@ -621,15 +628,14 @@ paths:
           description: Role ID
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Role
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Role'
+                $ref: '#/components/schemas/Role'
         '404':
           description: The role was not found
         '500':
@@ -693,7 +699,7 @@ paths:
           description: ID of the role to be deleted
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: Role successfully eliminated
@@ -701,12 +707,12 @@ paths:
           description: The role was not found
         '500':
           description: Server error
-  /getOperations:
+  /getAccountEntries:
     get:
       tags:
         - AccountEntry
       summary: Get all the operations
-      operationId: getOperations
+      operationId: getAccountEntries
       responses:
         '200':
           description: List of all operations
@@ -718,12 +724,12 @@ paths:
                   $ref: '#/components/schemas/AccountEntry'
         '500':
           description: Server error
-  /getOperation/{operationId}:
+  /getAccountEntry/{operationId}:
     get:
       tags:
         - AccountEntry
       summary: Get operation by ID
-      operationId: getOperationById
+      operationId: getAccountEntryById
       parameters:
         - in: path
           name: operationId
@@ -731,25 +737,24 @@ paths:
           description: AccountEntry ID
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: AccountEntry
           content:
             application/json:
               schema:
-                items:
                   $ref: '#/components/schemas/AccountEntry'
         '404':
           description: The operation was not found
         '500':
           description: Server error
-  /createOperation:
+  /createAccountEntry:
     post:
       tags:
         - AccountEntry
       summary: Create a new operation
-      operationId: createOperation
+      operationId: createAccountEntry
       requestBody:
         required: true
         content:
@@ -767,12 +772,12 @@ paths:
           description: Some of the parameters are not valid
         '500':
           description: Server error
-  /updateOperation:
+  /updateAccountEntry:
     put:
       tags:
         - AccountEntry
       summary: Update an existing operation
-      operationId: updateOperation
+      operationId: updateAccountEntry
       requestBody:
         required: true
         content:
@@ -790,12 +795,12 @@ paths:
           description: Some of the parameters are not valid
         '500':
           description: Server error
-  /deleteOperation/{operationId}:
+  /deleteAccountEntry/{operationId}:
     delete:
       tags:
         - AccountEntry
       summary: Delete an existing operation
-      operationId: deleteOperation
+      operationId: deleteAccountEntry
       parameters:
         - in: path
           name: operationId
@@ -803,7 +808,7 @@ paths:
           description: ID of the operation to be deleted
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: AccountEntry successfully removed
@@ -811,12 +816,12 @@ paths:
           description: The operation was not found
         '500':
           description: Server error
-  /getOperationTypes:
+  /getAccountEntryTypes:
     get:
       tags:
-        - AccountEntry Type
+        - AccountEntryType
       summary: Get all operation types
-      operationId: getOperationTypes
+      operationId: getAccountEntryTypes
       responses:
         '200':
           description: List of all operation types
@@ -825,15 +830,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/OperationType'
+                  $ref: '#/components/schemas/AccountEntryType'
         '500':
           description: Server error
-  /getOperationType/{operationTypeId}:
+  /getAccountEntryType/{operationTypeId}:
     get:
       tags:
-        - AccountEntry Type
+        - AccountEntryType
       summary: Get the operation type by ID
-      operationId: getOperationTypeById
+      operationId: getAccountEntryTypeById
       parameters:
         - in: path
           name: operationTypeId
@@ -841,71 +846,70 @@ paths:
           description: AccountEntry type ID
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: AccountEntry Type
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/OperationType'
+                $ref: '#/components/schemas/AccountEntryType'
         '404':
           description: The operation type was not found
         '500':
           description: Server error
-  /createOperationType:
+  /createAccountEntryType:
     post:
       tags:
-        - AccountEntry Type
+        - AccountEntryType
       summary: Creates a new operation type
-      operationId: createOperationType
+      operationId: createAccountEntryType
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OperationType'
+              $ref: '#/components/schemas/AccountEntryType'
       responses:
         '200':
           description: AccountEntry type successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OperationType'
+                $ref: '#/components/schemas/AccountEntryType'
         '400':
           description: Some of the parameters are not valid
         '500':
           description: Server error
-  /updateOperationType:
+  /updateAccountEntryType:
     put:
       tags:
-        - AccountEntry Type
+        - AccountEntryType
       summary: Update an existing operation type
-      operationId: updateOperationType
+      operationId: updateAccountEntryType
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OperationType'
+              $ref: '#/components/schemas/AccountEntryType'
       responses:
         '200':
           description: AccountEntry type successfully updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OperationType'
+                $ref: '#/components/schemas/AccountEntryType'
         '400':
           description: Some of the parameters are not valid
         '500':
           description: Server error
-  /deleteOperationType/{operationTypeId}:
+  /deleteAccountEntryType/{operationTypeId}:
     delete:
       tags:
-        - AccountEntry Type
+        - AccountEntryType
       summary: Delete an existing operation type
-      operationId: deleteOperationType
+      operationId: deleteAccountEntryType
       parameters:
         - in: path
           name: operationTypeId
@@ -913,7 +917,7 @@ paths:
           description: ID of the operation type to be deleted
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: AccountEntry type successfully removed
@@ -951,15 +955,62 @@ paths:
           description: User ID
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: User
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+        '500':
+          description: Server error
+  /getUserByUsername/{username}:
+    get:
+      tags:
+        - User
+      summary: Get the user by username
+      operationId: getUserByUsername
+      parameters:
+        - in: path
+          name: username
+          required: true
+          description: User ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+        '500':
+          description: Server error
+  /getUserByEmail/{email}:
+    get:
+      tags:
+        - User
+      summary: Get the user by email
+      operationId: getUserByEmail
+      parameters:
+        - in: path
+          name: email
+          required: true
+          description: User ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
         '404':
           description: User not found
         '500':
@@ -1023,7 +1074,7 @@ paths:
           description: ID of the user to be deleted
           schema:
             type: integer
-            format: int32
+            format: int64
       responses:
         '200':
           description: User successfully deleted
@@ -1038,7 +1089,7 @@ components:
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         budget:
           type: number
           format: float
@@ -1058,7 +1109,7 @@ components:
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         comment:
           type: string
         status:
@@ -1073,7 +1124,7 @@ components:
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         comment:
           type: string
         status:
@@ -1088,7 +1139,7 @@ components:
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         comment:
           type: string
         status:
@@ -1103,7 +1154,7 @@ components:
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         name:
           type: string
     Role:
@@ -1111,7 +1162,7 @@ components:
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         name:
           type: string
         comment:
@@ -1123,7 +1174,7 @@ components:
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         amount:
           type: number
           format: float
@@ -1143,13 +1194,13 @@ components:
         store:
           $ref: '#/components/schemas/Store'
         type_operation:
-          $ref: '#/components/schemas/OperationType'
-    OperationType:
+          $ref: '#/components/schemas/AccountEntryType'
+    AccountEntryType:
       type: object
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         comment:
           type: string
         status:
@@ -1158,14 +1209,14 @@ components:
           type: string
         last_modification:
           type: string
-          format: date
+          format: date-time
           description: Date of last change in transaction type
     User:
       type: object
       properties:
         id:
           type: integer
-          format: int32
+          format: int64
         username:
           type: string
         password:
