@@ -41,7 +41,7 @@
                                 <npmName>@daxlto/${project.artifactId}</npmName>
                                 <providedInRoot>true</providedInRoot>
                                 <apiModulePrefix>Accounting</apiModulePrefix>
-                                <ngVersion>17.3.12</ngVersion>
+                                <ngVersion>11.2.14</ngVersion>
                                 <snapshot>false</snapshot>
                                 <npmVersion>${project.version}</npmVersion>
                             </configOptions>
