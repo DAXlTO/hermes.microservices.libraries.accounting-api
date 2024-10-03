@@ -4,7 +4,7 @@ info:
   description: The Accounting service is responsible for sending and receiving information about user operations.
   version: 0.1.0
 servers:
-  - url: 'http://localhost:8080/accounting-java'
+  - url: 'http://localhost:8080/accounting'
 tags:
   - name: Wallet
     description: User wallets
