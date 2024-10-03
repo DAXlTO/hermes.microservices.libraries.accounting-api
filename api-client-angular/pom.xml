@@ -12,7 +12,7 @@
 
     <groupId>es.aldane.hermes.cloud</groupId>
     <artifactId>accounting-api-client-angular</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 
     <properties>
         <openapi-generator-maven-plugin.version>6.2.1</openapi-generator-maven-plugin.version>
@@ -42,7 +42,7 @@
                                 <providedInRoot>true</providedInRoot>
                                 <apiModulePrefix>Accounting</apiModulePrefix>
                                 <ngVersion>17.3.12</ngVersion>
-                                <snapshot>true</snapshot>
+                                <snapshot>false</snapshot>
                                 <npmVersion>${project.version}</npmVersion>
                             </configOptions>
                         </configuration>
