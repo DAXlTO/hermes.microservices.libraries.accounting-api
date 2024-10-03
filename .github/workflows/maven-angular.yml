@@ -43,7 +43,7 @@ jobs:
           mvn clean install
           cd /home/runner/work/hermes.microservices.libraries.accounting-api/hermes.microservices.libraries.accounting-api/api-client-angular/target/generated-sources/openapi
           npm install typescript@5.5.2 --save-dev --force
-          npm install @types/node18.11.19 --save-dev --force
+          npm install @types/node@14 --save-dev --force
           npm install --force
           npm ci --force
           npm run build

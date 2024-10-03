@@ -67,4 +67,5 @@
             <url>https://maven.pkg.github.com/DAXlTO/hermes.microservices.libraries.accounting-api</url>
         </repository>
     </distributionManagement>
+
 </project>
