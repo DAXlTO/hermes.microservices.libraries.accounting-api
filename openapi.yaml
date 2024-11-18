@@ -744,6 +744,33 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/AccountEntry'
+        '404':
+          description: The operation was not found
+        '500':
+          description: Server error
+  /getAccountEntryByWallet/{walletId}:
+    get:
+      tags:
+        - AccountEntry
+      summary: Get operation by Wallet ID
+      operationId: getAccountEntryByWalletId
+      parameters:
+        - in: path
+          name: walletId
+          required: true
+          description: AccountEntry ID
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: AccountEntry
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
                   $ref: '#/components/schemas/AccountEntry'
         '404':
           description: The operation was not found
@@ -1102,6 +1129,9 @@ components:
         user:
           $ref: '#/components/schemas/User'
         last_modification:
+          type: string
+          format: date-time
+        creation_date:
           type: string
           format: date-time
     Category:
